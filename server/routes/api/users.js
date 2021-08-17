@@ -52,8 +52,6 @@ router.route('/profile')
         const {permission} = res.locals;
         const user = await User.findById(req.user._id);
         if (!user) return res.status(400).json({message: 'User not found'})
-        console.log(user);
-        console.log(permission);
         res.status(200).json(permission.filter(user._doc))
         // next();
     } catch (error) {
@@ -98,7 +96,7 @@ router.route('/update-email').patch(checkLoggedIn, grantAccess('readOwn', 'profi
             .cookie('x-access-token', token)
             .status(200).json(user.email);
     } catch (error) {
-        res.status(400).json({message: 'Error', error})
+        res.status(400).json({message: 'Error', error});
     }
 });
 

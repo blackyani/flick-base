@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 app.use(checkToken);
 
 app.use('/api/users', users);
+app.use('/api/articles', articles);
 
 const port = process.env.PORT || 3002;
 app.listen(port,()=>{
