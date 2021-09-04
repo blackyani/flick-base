@@ -5,14 +5,17 @@ import fonts from "./settings/fonts";
 
 import Home from './components/home';
 import Header from './components/navigation/header';
+import MainLayout from "./hoc/mainLayout";
 
 const Routes = () => {
     return (
         <BrowserRouter>
             <Header/>
-            <Switch>
-                <Route path="/" component={Home} />
-            </Switch>
+            <MainLayout>
+                <Switch>
+                    <Route path="/" component={Home} />
+                </Switch>
+            </MainLayout>
             <GoogleFontLoader
                 fonts={fonts}
             />
