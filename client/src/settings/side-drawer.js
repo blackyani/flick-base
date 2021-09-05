@@ -14,7 +14,7 @@ export default [
         label: 'Contact'
     },
     {
-        route: '/auth',
+        route: '/login',
         icon: VpnKeyIcon,
         label: 'Sign in'
     },

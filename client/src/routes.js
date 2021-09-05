@@ -5,6 +5,7 @@ import fonts from "./settings/fonts";
 
 import Home from './components/home';
 import Header from './components/navigation/header';
+import Auth from './components/auth';
 import MainLayout from "./hoc/mainLayout";
 
 const Routes = () => {
@@ -13,7 +14,9 @@ const Routes = () => {
             <Header/>
             <MainLayout>
                 <Switch>
-                    <Route path="/" component={Home} />
+                    <Route path="/" exact component={Home} />
+                    <Route path="/login" component={Auth} />
+                    <Route path="/register" component={Auth} />
                 </Switch>
             </MainLayout>
             <GoogleFontLoader
