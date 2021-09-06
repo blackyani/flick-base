@@ -1,6 +1,5 @@
 import * as articles from "./";
 import axios from "axios";
-axios.defaults.headers.post['Content-type'] = 'application/json';
 
 export const getArticles = (params) => {
     return async (dispatch, getState) =>  {

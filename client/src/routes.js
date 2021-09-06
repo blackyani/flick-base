@@ -14,9 +14,9 @@ const Routes = () => {
             <Header/>
             <MainLayout>
                 <Switch>
-                    <Route path="/" exact component={Home} />
                     <Route path="/login" component={Auth} />
                     <Route path="/register" component={Auth} />
+                    <Route path="/" component={Home} />
                 </Switch>
             </MainLayout>
             <GoogleFontLoader

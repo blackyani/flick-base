@@ -5,6 +5,7 @@ require('dotenv').config();
 const { User } = require('../../models/user');
 const { checkLoggedIn } = require('../../middleware/auth');
 const { grantAccess } = require('../../middleware/roles');
+const {getUserProps} = require('../../utils')
 
 router.route('/register').post(async (req, res) => {
     const { email, password } = req.body;
@@ -20,7 +21,7 @@ router.route('/register').post(async (req, res) => {
         res
             .cookie('x-access-token', token)
             .status(200)
-            .send({_id: doc._id.toHexString()});
+            .send({...getUserProps(doc)});
 
     } catch (error) {
         res.status(400).json({message: 'Error', error})
@@ -30,17 +31,17 @@ router.route('/register').post(async (req, res) => {
 router.route('/sign-in').post(async (req, res, next) => {
     const { email , password } = req.body;
     try {
-        const user = await User.findOne({email});
-        if (!user) return res.status(400).json({message: 'There is no such user'});
+        const doc = await User.findOne({email});
+        if (!doc) return res.status(400).json({message: 'There is no such user'});
 
-        const compare = await user.comparePassword(password);
+        const compare = await doc.comparePassword(password);
         if (!compare) return res.status(400).json({message: 'Bad password'});
 
-        const token = user.generateToken();
+        const token = doc.generateToken();
         res
             .cookie('x-access-token', token)
             .status(200)
-            .send({_id: user._id.toHexString()});
+            .send({...getUserProps(doc)});
     } catch (error) {
         res.status(400).json({message: 'Error', error})
     }

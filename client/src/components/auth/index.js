@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import { useDispatch } from "react-redux";
 import { Link as RouterLink } from 'react-router-dom';
@@ -22,9 +22,8 @@ const Auth = (props) => {
             email: Yup.string().required('Email is required').email('Email is not valid'),
             password: Yup.string().required('Password is required')
         }),
-        onSubmit: (values, {resetForm}) => {
+        onSubmit: (values) => {
             handleSubmit(values);
-            // resetForm();
         }
     });
 
@@ -32,9 +31,17 @@ const Auth = (props) => {
 
     const handleSubmit = (values) => {
         if (isRegister()) {
-            dispatch(registerUser(values));
+            dispatch(registerUser(values)).then((resp) => {
+                if (resp._id) {
+                    props.history.push('/dashboard')
+                }
+            });
         } else {
-            dispatch(loginUser(values));
+            dispatch(loginUser(values)).then((resp) => {
+                if (resp._id) {
+                   props.history.push('/dashboard')
+               }
+            });
         }
     }
 
