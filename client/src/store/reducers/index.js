@@ -8,7 +8,7 @@ import users from './users';
 const appReducers = combineReducers({
     articles,
     notification,
-    site,
+    site: site,
     users
 });
 

@@ -19,7 +19,7 @@ export default [
         label: 'Sign in'
     },
     {
-        route: '/auth',
+        route: '/sign-out',
         icon: VpnKeyIcon,
         label: 'Sign out'
     }

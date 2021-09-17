@@ -1,4 +1,4 @@
-import {GET_ARTICLES, SET_NOTIFICATION, AUTH} from '../types';
+import {GET_ARTICLES, SET_NOTIFICATION, AUTH, SIGN_OUT, SITE_LAYOUT} from '../types';
 
 // articles
 export const getArticles = (articles) => ({
@@ -17,3 +17,13 @@ export const auth = (user) => ({
     type: AUTH,
     payload: user
 });
+
+export const signOut = () => ({
+    type: SIGN_OUT,
+});
+
+// site
+export const appLayout = (layout) => ({
+    type: SITE_LAYOUT,
+    payload: layout,
+})

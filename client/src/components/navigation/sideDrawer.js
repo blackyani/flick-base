@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import {authLinks, notAuthLinks} from "../../settings/link-guards";
 import {
     Drawer,
     List,
@@ -13,22 +15,46 @@ import DehazeIcon from '@material-ui/icons/Dehaze';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 
 import sideDrawerLinks from '../../settings/side-drawer';
+import {signOutUser} from "../../store/actions/user-actions";
 
-const SideDrawer = () => {
+const SideDrawer = (props) => {
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
+    const isAuth = useSelector((state) => state.users.auth);
 
-    const links = sideDrawerLinks.map((link) => (
-        <ListItem
-            key={link.label}
-            button
-            component={RouterLink}
-            to={link.route}
-            onClick={() => setShow(false)}
-        >
-            <ListItemIcon><link.icon /></ListItemIcon>
-            <ListItemText primary={link.label}/>
-        </ListItem>
-    ));
+    const filteredLinks = isAuth
+        ? sideDrawerLinks.filter(link => !authLinks.includes(link.route))
+        : sideDrawerLinks.filter(link => !notAuthLinks.includes(link.route))
+
+    const logOutHandler = () => {
+        dispatch(signOutUser());
+        setShow(false);
+        props.history.push('/');
+    }
+
+    const links = filteredLinks.map((link) => {
+        if (link.label === 'Sign out') {
+            return <ListItem
+                key={link.label}
+                button
+                onClick={logOutHandler}
+            >
+                <ListItemIcon><link.icon /></ListItemIcon>
+                <ListItemText primary={link.label}/>
+            </ListItem>
+        } else {
+            return <ListItem
+                key={link.label}
+                button
+                component={RouterLink}
+                to={link.route}
+                onClick={() => setShow(false)}
+            >
+                <ListItemIcon><link.icon /></ListItemIcon>
+                <ListItemText primary={link.label}/>
+            </ListItem>
+        }
+    });
 
     return (
         <>
@@ -58,4 +84,4 @@ const SideDrawer = () => {
     );
 };
 
-export default SideDrawer;
+export default withRouter(SideDrawer);
