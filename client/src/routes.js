@@ -10,8 +10,11 @@ import Header from './components/navigation/header';
 import Auth from './components/auth';
 import MainLayout from "./hoc/main-layout";
 import Dashboard from "./components/dashboard";
+import Profile from "./components/dashboard/profile";
+import Articles from "./components/dashboard/articles";
 import {isAuthUser} from "./store/actions/user-actions";
-
+import AuthGuard from "./hoc/auth-guard";
+import PreventAuthRoute from "./hoc/prevent-auth-route";
 
 const Routes = () => {
     const dispatch = useDispatch();
@@ -37,9 +40,11 @@ const Routes = () => {
                 {
                     loading ? <Box display="flex" justifyContent="center"><CircularProgress /></Box> :
                         <Switch>
-                            {!isAuth ? <Route path="/login" component={Auth} /> : null}
-                            {!isAuth ? <Route path="/register" component={Auth} /> : null}
-                            <Route path="/dashboard" component={Dashboard} />
+                            <Route path="/login" component={PreventAuthRoute(Auth)} /> : null}
+                            <Route path="/register" component={PreventAuthRoute(Auth)} /> : null}
+                            <Route path="/dashboard/profile" component={AuthGuard(Profile)} />
+                            <Route path="/dashboard/articles" component={AuthGuard(Articles, true)} />
+                            <Route path="/dashboard" component={AuthGuard(Dashboard)} />
                             <Route path="/" component={Home} />
                         </Switch>
                 }

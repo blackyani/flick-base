@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid, Button } from '@material-ui/core';
 import ArticleCard from "../../utils/articleCard";
 
-import initialSort from "../../config/loadMore";
+import initialSort from "../../settings/load-more";
 import {getArticles} from '../../store/actions/article';
 
 const Home = () => {

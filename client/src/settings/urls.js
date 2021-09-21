@@ -1,0 +1,1 @@
+export const BASE_URL = process.env.NODE_ENV === 'dvelopment' ? 'http://localhost:3002/api' : 'https://authexx77.herokuapp.com/api';

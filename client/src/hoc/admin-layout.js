@@ -1,25 +1,31 @@
 import React from 'react';
 import {Link as RouterLink} from 'react-router-dom';
+import { useSelector } from "react-redux";
+
+import {roleLinks} from '../settings/link-guards';
 
 import {
     List,
     ListItem,
     ListItemText
-} from '@material-ui/core'
+} from '@material-ui/core';
 
 const AdminLayout = (props) => {
+    const role = useSelector((state) => state.users.data.role);
+
+    const linksList = roleLinks[role].map(({route, label}) => (
+        <ListItem button component={RouterLink} to={route}>
+            <ListItemText primary={label} />
+        </ListItem>
+    ));
+
     return (
         <>
             <div className="row adminLayout">
                 <nav className="col-md-3 col-lg-2 d-none d-md-block sidebar">
                     <div>
                         <List>
-                            <ListItem button component={RouterLink} to="/dashboard">
-                                <ListItemText primary="Dashboard" />
-                            </ListItem>
-                            <ListItem button component={RouterLink} to="/dashboard/profile">
-                                <ListItemText primary="Profile" />
-                            </ListItem>
+                            {linksList}
                         </List>
                     </div>
                 </nav>

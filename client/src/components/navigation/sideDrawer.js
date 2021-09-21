@@ -67,18 +67,24 @@ const SideDrawer = (props) => {
                 <List>
                     {links}
                 </List>
-                <Divider />
-                <List>
-                    <ListItem
-                        button
-                        component={RouterLink}
-                        to='/dashboard'
-                        onClick={() => setShow(false)}
-                    >
-                        <ListItemIcon><DashboardIcon /></ListItemIcon>
-                        <ListItemText primary="Dashboard"/>
-                    </ListItem>
-                </List>
+
+                {
+                    isAuth ?
+                        <>
+                            <Divider />
+                            <List>
+                                <ListItem
+                                    button
+                                    component={RouterLink}
+                                    to='/dashboard'
+                                    onClick={() => setShow(false)}
+                                >
+                                    <ListItemIcon><DashboardIcon /></ListItemIcon>
+                                    <ListItemText primary="Dashboard"/>
+                                </ListItem>
+                            </List>
+                        </> : null
+                }
             </Drawer>
         </>
     );
