@@ -73,9 +73,10 @@ router.route('/profile')
     }
 });
 
-router.route('/is-auth').get(checkLoggedIn, (req, res, next) => {
-    res.status(200).json({...getUserProps(req.user)});
-});
+router.route('/is-auth')
+    .get(checkLoggedIn,async (req,res) =>{
+        res.status(200).send(getUserProps(req.user))
+    })
 
 router.route('/update-email').patch(checkLoggedIn, grantAccess('readOwn', 'profile'), async (req, res, next) => {
     try {

@@ -71,10 +71,11 @@ router.route('/admin/:id')
 router.route('/get-article-by-id/:id').get(async (req, res, next) => {
     try {
         const {id} = req.params;
-        const article = await Article.find({status: 'public', _id: id});
-        console.log(article);
-        if (!article) res.status(400).json({message: 'There is no such article'});
-        res.status(200).json(article);
+        Article.find({status: 'public', _id: id}).then(([article]) => {
+            res.status(200).json(article);
+        }).catch(() => {
+            res.status(400).json({message: 'There is no such article'});
+        })
     } catch (error) {
         res.status(400).json({message: 'Error', error});
     }

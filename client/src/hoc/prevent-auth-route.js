@@ -10,7 +10,6 @@ const PreventAuthRoute = (ComposedComponent) => {
         useEffect(() => {
             if (isAuth) {
                 props.history.push('/');
-                dispatch(notificationShow('error', 'You are already authenticated!'));
             }
         }, [props, isAuth])
 

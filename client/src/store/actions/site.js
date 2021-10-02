@@ -5,3 +5,9 @@ export const appLayout = (layout) => {
         dispatch(site.appLayout(layout));
     }
 }
+
+export const loading = (status) => {
+    return (dispatch) => {
+        dispatch(site.loading(status));
+    }
+}

@@ -1,6 +1,8 @@
 import * as users from './index';
 import axios from 'axios';
-import {getAuthHeader, removeTokenCookie} from "../../utils/tools";
+import { getAuthHeader, removeTokenCookie, getTokenCookie } from "../../utils/tools";
+import { loading } from "./site";
+import {BASE_URL} from "../../settings/urls";
 
 export const registerUser = (params) => async (dispatch) => {
     return new Promise(((resolve) => {
@@ -28,18 +30,21 @@ export const loginUser = (params) => async (dispatch) => {
 };
 
 export const isAuthUser = () => async (dispatch) => {
+    dispatch(loading(true));
     return new Promise(((resolve) => {
-        if (getAuthHeader) {
-            axios.get('api/users/is-auth', getAuthHeader).then(({data}) => {
-                dispatch(users.auth({data, auth: true }));
-                resolve(data)
-            }).catch((error) => {
-                const {error: message} = error.response.data
-                dispatch(users.signOut());
-                dispatch(users.notificationShow('error', message || error.message));
-                removeTokenCookie()
-            });
+        if(!getTokenCookie) {
+            throw new Error();
         }
+        axios.get(`${BASE_URL}/users/is-auth`, getAuthHeader()).then(({data}) => {
+            dispatch(users.auth({data, auth: true }));
+            resolve(data)
+        }).catch((error) => {
+            dispatch(users.signOut());
+            dispatch(users.notificationShow('error', error?.response?.data || error.message));
+            removeTokenCookie()
+        }).finally(() => {
+            dispatch(loading(false));
+        });
     }));
 };
 

@@ -10,8 +10,8 @@ export const errorHelper = (formik, field) => ({
     helperText: formik.errors[field] && formik.touched[field] ?  formik.errors[field] : null
 });
 
-export const getTokenCookie = cookie.load('x-access-token');
-export const removeTokenCookie = () => getTokenCookie && cookie.remove('x-access-token');
-export const getAuthHeader = getTokenCookie ? { headers: {
-   'x-access-token': getTokenCookie
-}} : null;
+export const getTokenCookie = () => cookie.load('x-access-token');
+export const removeTokenCookie = () => cookie.remove('x-access-token', {path:'/'});
+export const getAuthHeader = () => {
+    return { headers: { 'x-access-token':getTokenCookie() }}
+}

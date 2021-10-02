@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Button } from '@material-ui/core';
-import ArticleCard from "../../utils/articleCard";
+import ArticleCard from "../../utils/article-card";
 
 import initialSort from "../../settings/load-more";
 import {getArticles} from '../../store/actions/article';

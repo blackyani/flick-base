@@ -5,14 +5,15 @@ import { notificationShow } from "../store/actions";
 const AuthGuard = (ComposedComponent, roleCheck = false) => {
     const AuthenticationCheck = (props) => {
         const isAuth = useSelector((state) => state.users.auth);
+        const loading = useSelector((state) => state.site.loading);
         const role = useSelector((state) => state.users.data.role);
         const dispatch = useDispatch();
         useEffect(() => {
-            if (!isAuth) {
+            if (!loading && !isAuth) {
                 props.history.push('/');
                 dispatch(notificationShow('error', 'You are not authenticated!'));
             } else {
-                if (roleCheck && role !== 'admin') {
+                if (!loading && roleCheck && role !== 'admin') {
                     props.history.push('/');
                     dispatch(notificationShow('error', 'You are not allowed to follow this link!'));
                 }
