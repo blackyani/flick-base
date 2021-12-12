@@ -8,7 +8,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import htmlToDraft from 'html-to-draftjs';
 
 
-const WYSIWYG = ({handleEditorState}) => {
+const WYSIWYG = ({handleEditorState, editContent}) => {
     const [editorData, setEditorData] = useState({
         editorState: EditorState.createEmpty()
     });
@@ -20,6 +20,16 @@ const WYSIWYG = ({handleEditorState}) => {
         });
         handleEditorState(HTMLdata);
     }
+
+    useEffect(() => {
+        if (editContent) {
+            const {contentBlocks, entityMap} = htmlToDraft(editContent);
+            const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+            setEditorData({
+                editorState: EditorState.createWithContent(contentState)
+            });
+        }
+    }, [editContent])
 
     return (
         <Editor

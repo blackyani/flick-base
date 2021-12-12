@@ -5,7 +5,7 @@ import AdminLayout from "../../../hoc/admin-layout";
 import {initialValues, validationSchema, statusList} from './validation-shema';
 import {errorHelper} from '../../../utils/tools';
 import WYSIWYG from "../../../utils/form/wysiwyg";
-import {postArticle} from "../../../store/actions/article";
+import {clearAdminArticle, editArticle, getAdminArticle, postArticle} from "../../../store/actions/article";
 
 
 import {
@@ -23,14 +23,17 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-const AddArticle = () => {
+const EditArticle = (props) => {
     const dispatch = useDispatch();
+    const article = useSelector((state) => state.articles.adminArticle);
     const formik = useFormik({
         enableReinitialize: true,
-        initialValues,
+        initialValues: article ? article: initialValues,
         validationSchema,
         onSubmit: (values, {resetForm}) => {
-            dispatch(postArticle(values))
+            dispatch(editArticle(values, props.match.params.id)).then(() => {
+                props.history.push('/dashboard/articles');
+            })
         }
     });
 
@@ -51,11 +54,24 @@ const AddArticle = () => {
         arrayHelpers.remove(index)
     }
 
+    useEffect(() => {
+        dispatch(getAdminArticle(props.match.params.id));
+        if (article?.content) {
+            formik.setFieldValue('content', article.content);
+        }
+    }, [dispatch, props.match.params]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearAdminArticle())
+        }
+    }, [dispatch]);
+
     const errorRender = (field) => (!!(formik.errors[field] && formik.touched[field]) ?
         <FormHelperText error={true}>{formik.errors[field]}</FormHelperText> : null)
 
     return (
-        <AdminLayout section="Add Article">
+        <AdminLayout section="Edit Article">
             <form className="article_form mt-3" onSubmit={formik.handleSubmit}>
                 <div className="form-group">
                     <TextField
@@ -140,22 +156,22 @@ const AddArticle = () => {
                         >
                             {statusList.map(status =>
                                 <MenuItem value={status.value} key={`menu-${status.value}`}>
-                                <em>{status.label}</em>
-                            </MenuItem>)
+                                    <em>{status.label}</em>
+                                </MenuItem>)
                             }
                         </Select>
                         {errorRender('status')}
                     </FormControl>
 
-                    <WYSIWYG handleEditorState={handleEditorState} />
+                    <WYSIWYG handleEditorState={handleEditorState} editContent={article?.content} />
                     {errorRender('content')}
                 </div>
 
                 <Divider className="mt-3 mb-3" />
-                <Button variant="contained" color="primary" type="submit">Add article</Button>
+                <Button variant="contained" color="primary" type="submit">Edit article</Button>
             </form>
         </AdminLayout>
     );
 };
 
-export default AddArticle;
+export default EditArticle;

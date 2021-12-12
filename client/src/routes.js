@@ -14,6 +14,7 @@ import Profile from "./components/dashboard/profile";
 import Articles from "./components/dashboard/articles";
 import Article from "./components/articles/article";
 import AddArticle from "./components/dashboard/articles/add";
+import EditArticle from "./components/dashboard/articles/edit";
 import {isAuthUser} from "./store/actions/user-actions";
 import AuthGuard from "./hoc/auth-guard";
 import PreventAuthRoute from "./hoc/prevent-auth-route";
@@ -46,6 +47,7 @@ const Routes = () => {
                             <Route path="/register" component={PreventAuthRoute(Auth)} /> : null}
                             <Route path="/dashboard/profile" component={AuthGuard(Profile)} />
                             <Route path="/dashboard/articles/add" component={AuthGuard(AddArticle, true)} />
+                            <Route path="/dashboard/articles/edit/:id" component={AuthGuard(EditArticle, true)} />
                             <Route path="/dashboard/articles" component={AuthGuard(Articles, true)} />
                             <Route path="/article/:id" component={Article} />
                             <Route path="/dashboard" component={AuthGuard(Dashboard)} />

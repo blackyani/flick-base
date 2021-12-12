@@ -13,8 +13,8 @@ import {
 const AdminLayout = (props) => {
     const role = useSelector((state) => state.users.data.role);
 
-    const linksList = roleLinks[role].map(({route, label}) => (
-        <ListItem button component={RouterLink} to={route}>
+    const linksList = roleLinks[role].map(({route, label}, index) => (
+        <ListItem button component={RouterLink} to={route} key={`${index}-${label}`}>
             <ListItemText primary={label} />
         </ListItem>
     ));

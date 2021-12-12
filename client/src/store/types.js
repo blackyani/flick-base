@@ -1,8 +1,12 @@
 export const GET_ARTICLES = 'articles/getArticles';
 export const GET_ARTICLE = 'articles/getArticle';
+export const GET_ADMIN_ARTICLES = 'articles/getAdminArticles';
 export const CLEAR_ARTICLE = 'articles/clearArticle';
 export const SET_NOTIFICATION = 'notification/setNotification';
 export const AUTH = 'users/auth';
 export const SIGN_OUT = 'users/signOut';
 export const SITE_LAYOUT = 'site/appLayout';
 export const LOADING = 'site/loading';
+export const UPDATE_ADMIN_ARTICLE = 'articles/updateAdminArticle';
+export const GET_ADMIN_ARTICLE = 'articles/getAdminArticle';
+export const CLEAR_ADMIN_ARTICLE = 'articles/clearAdminArticle';

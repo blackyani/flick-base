@@ -61,7 +61,18 @@ router.route('/admin/:id')
 
         const response = await Article.findByIdAndDelete(id);
         if (!response) res.status(400).json({message: 'There is no such article'});
-        res.status(200).json({message: 'Article is deleted'});
+
+        const limit = req.body.limit || 10;
+        const query = Article.aggregate()
+        const options = {
+            page: 1,
+            limit,
+            sort: {
+                _id: 'desc'
+            }
+        }
+        const articles = await Article.aggregatePaginate(query, options);
+        res.status(200).json(articles);
     } catch (error) {
         res.status(400).json({message: 'Error', error});
     }

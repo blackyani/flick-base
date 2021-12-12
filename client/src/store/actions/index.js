@@ -6,7 +6,11 @@ import {
     SIGN_OUT,
     SITE_LAYOUT,
     CLEAR_ARTICLE,
-    LOADING
+    CLEAR_ADMIN_ARTICLE,
+    LOADING,
+    GET_ADMIN_ARTICLES,
+    UPDATE_ADMIN_ARTICLE,
+    GET_ADMIN_ARTICLE
 } from '../types';
 
 // articles
@@ -23,6 +27,27 @@ export const getArticle = (article) => ({
 export const clearArticle = () => ({
     type: CLEAR_ARTICLE,
 });
+
+export const clearAdminArticle = () => ({
+    type: CLEAR_ADMIN_ARTICLE,
+});
+
+export const getAdminArticles = (articles) => ({
+   type: GET_ADMIN_ARTICLES,
+   payload: articles
+});
+
+export const getAdminArticle = (article) => ({
+    type: GET_ADMIN_ARTICLE,
+    payload: article
+});
+
+export const updateAdminArticle = (article) => {
+    return {
+        type: UPDATE_ADMIN_ARTICLE,
+        payload: article
+    }
+}
 
 // notifications
 export const notificationShow = (notificationType, msg) => ({
