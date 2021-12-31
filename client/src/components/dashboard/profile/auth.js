@@ -15,6 +15,7 @@ const Profile = () => {
     const users = useSelector(state => state.users);
     const notification = useSelector(state => state.notification);
     const toggleModal = (status = true) => setEmailModal(status);
+
     return (
         <div className="mb-3 auth_grid">
             <Grid container spacing={1} alignItems="flex-end">

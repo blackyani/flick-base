@@ -19,7 +19,7 @@ export default function users (state = defaultState, {type, payload}) {
         case SIGN_OUT:
             return {...state, data: defaultState.data, auth: false}
         case UPDATE_EMAIL:
-            return {...state, data: {email: payload, ...state.data}}
+            return {...state, data: {...state.data, email: payload}};
         default:
             return state;
     }

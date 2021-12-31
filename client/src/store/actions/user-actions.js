@@ -58,6 +58,7 @@ export const changeEmail = (params) => async (dispatch) => {
     return new Promise(((resolve) => {
         axios.patch(`${BASE_URL}/users/update-email`, params, getAuthHeader()).then(({data}) => {
             dispatch(users.updateEmail(data));
+            dispatch(users.notificationShow('success', 'Success! Email changed'));
             resolve(data)
         }).catch((error) => {
             const {message} = error.response.data
