@@ -10,7 +10,8 @@ import {
     LOADING,
     GET_ADMIN_ARTICLES,
     UPDATE_ADMIN_ARTICLE,
-    GET_ADMIN_ARTICLE
+    GET_ADMIN_ARTICLE,
+    UPDATE_EMAIL
 } from '../types';
 
 // articles
@@ -64,6 +65,11 @@ export const auth = (user) => ({
 export const signOut = () => ({
     type: SIGN_OUT,
 });
+
+export const updateEmail = (email) => ({
+    type: UPDATE_EMAIL,
+    payload: email,
+})
 
 // site
 export const appLayout = (layout) => ({

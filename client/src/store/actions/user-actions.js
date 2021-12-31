@@ -3,6 +3,7 @@ import axios from 'axios';
 import { getAuthHeader, removeTokenCookie, getTokenCookie } from "../../utils/tools";
 import { loading } from "./site";
 import {BASE_URL} from "../../settings/urls";
+import {updateEmail} from "./index";
 
 export const registerUser = (params) => async (dispatch) => {
     return new Promise(((resolve) => {
@@ -52,3 +53,15 @@ export const signOutUser = () => async (dispatch) => {
     dispatch(users.signOut());
     removeTokenCookie();
 }
+
+export const changeEmail = (params) => async (dispatch) => {
+    return new Promise(((resolve) => {
+        axios.patch(`${BASE_URL}/users/update-email`, params, getAuthHeader()).then(({data}) => {
+            dispatch(users.updateEmail(data));
+            resolve(data)
+        }).catch((error) => {
+            const {message} = error.response.data
+            dispatch(users.notificationShow('error', message || error.message));
+        });
+    }));
+};
