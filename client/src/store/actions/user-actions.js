@@ -3,7 +3,6 @@ import axios from 'axios';
 import { getAuthHeader, removeTokenCookie, getTokenCookie } from "../../utils/tools";
 import { loading } from "./site";
 import {BASE_URL} from "../../settings/urls";
-import {updateEmail} from "./index";
 
 export const registerUser = (params) => async (dispatch) => {
     return new Promise(((resolve) => {
@@ -59,6 +58,19 @@ export const changeEmail = (params) => async (dispatch) => {
         axios.patch(`${BASE_URL}/users/update-email`, params, getAuthHeader()).then(({data}) => {
             dispatch(users.updateEmail(data));
             dispatch(users.notificationShow('success', 'Success! Email changed'));
+            resolve(data)
+        }).catch((error) => {
+            const {message} = error.response.data
+            dispatch(users.notificationShow('error', message || error.message));
+        });
+    }));
+};
+
+export const changeProfile = (params) => async (dispatch) => {
+    return new Promise(((resolve) => {
+        axios.patch(`${BASE_URL}/users/profile`, params, getAuthHeader()).then(({data}) => {
+            dispatch(users.updateProfile(data));
+            dispatch(users.notificationShow('success', 'Success! Profile changed'));
             resolve(data)
         }).catch((error) => {
             const {message} = error.response.data

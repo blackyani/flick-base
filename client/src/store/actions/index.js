@@ -11,7 +11,8 @@ import {
     GET_ADMIN_ARTICLES,
     UPDATE_ADMIN_ARTICLE,
     GET_ADMIN_ARTICLE,
-    UPDATE_EMAIL
+    UPDATE_EMAIL,
+    UPDATE_PROFILE
 } from '../types';
 
 // articles
@@ -69,6 +70,11 @@ export const signOut = () => ({
 export const updateEmail = (email) => ({
     type: UPDATE_EMAIL,
     payload: email,
+})
+
+export const updateProfile = (payload) => ({
+    type: UPDATE_PROFILE,
+    payload,
 })
 
 // site

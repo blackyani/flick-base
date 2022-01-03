@@ -1,4 +1,4 @@
-import {AUTH, SIGN_OUT, UPDATE_EMAIL} from "../types";
+import {AUTH, SIGN_OUT, UPDATE_EMAIL, UPDATE_PROFILE} from "../types";
 
 const defaultState = {
     data: {
@@ -20,6 +20,8 @@ export default function users (state = defaultState, {type, payload}) {
             return {...state, data: defaultState.data, auth: false}
         case UPDATE_EMAIL:
             return {...state, data: {...state.data, email: payload}};
+        case UPDATE_PROFILE:
+            return {...state, data: {...payload}}
         default:
             return state;
     }

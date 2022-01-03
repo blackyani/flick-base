@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useSelector} from "react-redux";
 import {Modal} from "react-bootstrap";
 import EmailStepper from './stepper/email';
@@ -13,7 +13,6 @@ import EditIcon from '@material-ui/icons/Edit';
 const Profile = () => {
     const [modal, setEmailModal] = useState(false);
     const users = useSelector(state => state.users);
-    const notification = useSelector(state => state.notification);
     const toggleModal = (status = true) => setEmailModal(status);
 
     return (
@@ -29,7 +28,7 @@ const Profile = () => {
 
             <Grid container spacing={1} alignItems="flex-end">
                 <Grid item>
-                    <TextField value={'users.data.password'} disabled />
+                    <TextField placeholder="***********" value={users.data.password} disabled />
                 </Grid>
                 <Grid item>
                     <EditIcon color="primary" onClick={() => toggleModal()} />
