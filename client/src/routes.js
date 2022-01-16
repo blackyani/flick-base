@@ -18,10 +18,10 @@ import EditArticle from "./components/dashboard/articles/edit";
 import {isAuthUser} from "./store/actions/user-actions";
 import AuthGuard from "./hoc/auth-guard";
 import PreventAuthRoute from "./hoc/prevent-auth-route";
+import Contact from "./components/contact";
 
 const Routes = () => {
     const dispatch = useDispatch();
-    const isAuth = useSelector((state) => state.users.auth);
     const user = useSelector((state) => state.users);
     const [loading, setLoading] = useState(true);
 
@@ -50,6 +50,7 @@ const Routes = () => {
                             <Route path="/dashboard/articles/edit/:id" component={AuthGuard(EditArticle, true)} />
                             <Route path="/dashboard/articles" component={AuthGuard(Articles, true)} />
                             <Route path="/article/:id" component={Article} />
+                            <Route path="/contact" component={AuthGuard(Contact)} />
                             <Route path="/dashboard" component={AuthGuard(Dashboard)} />
                             <Route path="/" component={Home} />
                         </Switch>

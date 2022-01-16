@@ -6,6 +6,7 @@ const { User } = require('../../models/user');
 const { checkLoggedIn } = require('../../middleware/auth');
 const { grantAccess } = require('../../middleware/roles');
 const {getUserProps} = require('../../utils')
+const { contactMail } = require('../../config/email')
 
 router.route('/register').post(async (req, res) => {
     const { email, password } = req.body;
@@ -28,7 +29,7 @@ router.route('/register').post(async (req, res) => {
     }
 });
 
-router.route('/sign-in').post(async (req, res, next) => {
+router.route('/sign-in').post(async (req, res, ) => {
     const { email , password } = req.body;
     try {
         const doc = await User.findOne({email});
@@ -48,7 +49,7 @@ router.route('/sign-in').post(async (req, res, next) => {
 });
 
 router.route('/profile')
-    .get(checkLoggedIn, grantAccess('readOwn', 'profile'), async (req, res, next) => {
+    .get(checkLoggedIn, grantAccess('readOwn', 'profile'), async (req, res) => {
     try {
         const {permission} = res.locals;
         const user = await User.findById(req.user._id);
@@ -58,7 +59,7 @@ router.route('/profile')
     } catch (error) {
         res.status(400).json({message: 'Error', error})
     }
-    }).patch(checkLoggedIn, grantAccess('updateOwn', 'profile'), async (req, res, next) => {
+    }).patch(checkLoggedIn, grantAccess('updateOwn', 'profile'), async (req, res) => {
     try {
         const {firstname, lastname, age} = req.body;
         const user = await User.findByIdAndUpdate(
@@ -78,7 +79,7 @@ router.route('/is-auth')
         res.status(200).send(getUserProps(req.user))
     })
 
-router.route('/update-email').patch(checkLoggedIn, grantAccess('readOwn', 'profile'), async (req, res, next) => {
+router.route('/update-email').patch(checkLoggedIn, grantAccess('readOwn', 'profile'), async (req, res) => {
     try {
         const {email} = req.body;
         if (!email)  return res.status(400).json({message: 'There is no email'});
@@ -97,6 +98,19 @@ router.route('/update-email').patch(checkLoggedIn, grantAccess('readOwn', 'profi
         res
             .cookie('x-access-token', token)
             .status(200).json(user.email);
+    } catch (error) {
+        res.status(400).json({message: 'Error', error});
+    }
+});
+
+router.route('/contact').post(checkLoggedIn, async (req, res) => {
+    try {
+        const {body} = req;
+        const resp = await contactMail(body);
+
+        if(resp) {
+            res.status(200).json({message: 'Email send'});
+        }
     } catch (error) {
         res.status(400).json({message: 'Error', error});
     }
