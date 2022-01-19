@@ -30,7 +30,7 @@ const EditArticle = (props) => {
         enableReinitialize: true,
         initialValues: article ? article: initialValues,
         validationSchema,
-        onSubmit: (values, {resetForm}) => {
+        onSubmit: (values) => {
             dispatch(editArticle(values, props.match.params.id)).then(() => {
                 props.history.push('/dashboard/articles');
             })

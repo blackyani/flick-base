@@ -43,6 +43,10 @@ const userSchema = mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    verified: {
+        type: Boolean,
+        default: false
     }
 }, {
     // timestamps: true, creates db timestamps
@@ -69,9 +73,19 @@ userSchema.methods.generateToken = function () {
     return jwt.sign(userObj, process.env.DB_SECRET, {expiresIn: '1d'});
 }
 
+userSchema.methods.generateRegisterToken = function () {
+    const user = this;
+    const userObj = {_id: user._id.toHexString()};
+    return jwt.sign(userObj, process.env.DB_SECRET, {expiresIn: '1d'});
+}
+
 userSchema.statics.emailTaken = async function (email) {
     const user = await this.findOne({email});
     return !!user;
+}
+
+userSchema.statics.validateToken = function (token) {
+    return jwt.verify(token, process.env.DB_SECRET);
 }
 
 const User = mongoose.model('User', userSchema);

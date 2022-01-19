@@ -8,6 +8,7 @@ import {CircularProgress, Box} from '@material-ui/core';
 import Home from './components/home';
 import Header from './components/navigation/header';
 import Auth from './components/auth';
+import Verification from './components/auth/verification';
 import MainLayout from "./hoc/main-layout";
 import Dashboard from "./components/dashboard";
 import Profile from "./components/dashboard/profile";
@@ -45,6 +46,7 @@ const Routes = () => {
                         <Switch>
                             <Route path="/login" component={PreventAuthRoute(Auth)} /> : null}
                             <Route path="/register" component={PreventAuthRoute(Auth)} /> : null}
+                            <Route path="/verification" component={Verification} /> : null}
                             <Route path="/dashboard/profile" component={AuthGuard(Profile)} />
                             <Route path="/dashboard/articles/add" component={AuthGuard(AddArticle, true)} />
                             <Route path="/dashboard/articles/edit/:id" component={AuthGuard(EditArticle, true)} />

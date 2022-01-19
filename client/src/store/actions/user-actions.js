@@ -85,10 +85,20 @@ export const sendEmail = (params) => (dispatch) => {
             dispatch(users.notificationShow('success', 'Success! We will contact with you'));
             resolve(data)
         }).catch((error) => {
-            console.log(error);
-            // const {message} = error.response.data
-            // dispatch(users.notificationShow('error', message || error.message));
+            const {message} = error.response.data
+            dispatch(users.notificationShow('error', message || error.message));
         });
     }));
 }
 
+export const accountVerify = (token) => (dispatch) => {
+    return new Promise(((resolve) => {
+        axios.get(`${BASE_URL}/users/verify?validation=${token}`).then(({data}) => {
+            dispatch(users.notificationShow('success', 'Your account is validated. You can now login!'));
+            resolve(data)
+        }).catch((error) => {
+            const {message} = error.response.data
+            dispatch(users.notificationShow('error', message || error.message));
+        });
+    }));
+}

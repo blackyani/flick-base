@@ -6,7 +6,7 @@ const { User } = require('../../models/user');
 const { checkLoggedIn } = require('../../middleware/auth');
 const { grantAccess } = require('../../middleware/roles');
 const {getUserProps} = require('../../utils')
-const { contactMail } = require('../../config/email')
+const { contactMail, registerEmail } = require('../../config/email')
 
 router.route('/register').post(async (req, res) => {
     const { email, password } = req.body;
@@ -19,6 +19,10 @@ router.route('/register').post(async (req, res) => {
         if (await User.emailTaken(email)) return res.status(400).json({message: 'Email already taken'})
         const token = user.generateToken();
         const doc = await user.save();
+
+        const emailToken = user.generateRegisterToken();
+        await registerEmail(doc.email, emailToken)
+
         res
             .cookie('x-access-token', token)
             .status(200)
@@ -111,6 +115,27 @@ router.route('/contact').post(checkLoggedIn, async (req, res) => {
         if(resp) {
             res.status(200).json({message: 'Email send'});
         }
+    } catch (error) {
+        res.status(400).json({message: 'Error', error});
+    }
+});
+
+router.route('/verify').get(async (req, res) => {
+    try {
+       const token = User.validateToken(req.query.validation);
+       const user = await User.findById(token._id);
+       if (!user) {
+           return res.status(400).json({message: 'User not found!'})
+       }
+        console.log('user.verified', user.verified);
+        if (user.verified) {
+           return res.status(400).json({message: 'User already verified!'})
+       }
+
+        user.verified = true
+        const updatedUser = await user.save();
+
+        return res.status(200).json(updatedUser)
     } catch (error) {
         res.status(400).json({message: 'Error', error});
     }
